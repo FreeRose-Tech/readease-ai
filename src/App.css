@@ -33,10 +33,88 @@
   }
 }
 
-.card {
+.card { 
+
   padding: 2em;
 }
 
 .read-the-docs {
   color: #888;
+}
+/* Genel Font ve Renk Ayarları (root içinde tanımlanır, böylece her yerden erişilebilir) */
+:root {
+    /* Renkler */
+    --primary-text-color: #333;           /* Ana metin rengi (koyu gri, saf siyah yerine) */
+    --secondary-text-color: #555;         /* İkincil metin rengi */
+    --background-color: #F8F8F8;          /* Uygulamanın genel arka plan rengi (açık gri/krem) */
+    --container-bg-color: #FFFFFF;        /* İçerik kutularının arka plan rengi */
+    --link-color: #007bff;                /* Bağlantı rengi */
+    --highlight-color-light: rgba(173, 216, 230, 0.4); /* Kelime vurgusu için açık mavi, şeffaf */
+    --highlight-color-sentence: rgba(255, 255, 0, 0.2); /* Cümle vurgusu için çok açık sarı, şeffaf */
+    --border-color: #ddd;                 /* Genel kenarlık rengi */
+    --button-bg-color: #007bff;           /* Buton arka plan rengi */
+    --button-text-color: #FFFFFF;         /* Buton metin rengi */
+
+    /* Font Boyutları ve Boşluklar */
+    --base-font-size: 1.15em;             /* Temel font boyutu (yaklaşık 18-20px) */
+    --base-line-height: 1.6;              /* Satır yüksekliği (okunabilirlik için önemli) */
+    --base-letter-spacing: 0.03em;        /* Harf aralığı */
+    --base-word-spacing: 0.08em;          /* Kelime aralığı */
+}
+
+/* Sayfa geneli stil ayarlamaları */
+body {
+    margin: 0;
+    padding: 0; /* body'nin kendi padding'ini kaldır, #root zaten padding'e sahip */
+    font-family: "Lexend", "OpenDyslexic", Arial, sans-serif; /* Disleksi dostu fontlar öncelikli */
+    font-size: var(--base-font-size);
+    line-height: var(--base-line-height);
+    letter-spacing: var(--base-letter-spacing);
+    word-spacing: var(--base-word-spacing);
+    color: var(--primary-text-color);
+    background-color: var(--background-color);
+    -webkit-font-smoothing: antialiased; /* Fontların daha yumuşak görünmesini sağlar */
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ortak elemanlar için temel sıfırlamalar veya ayarlar */
+p, li, h1, h2, h3, h4, h5, h6 {
+    text-align: left; /* Tüm metin içeriğini sola hizala (justified yapma) */
+    hyphens: none; /* Kelime bölmesini kapat (bazı disleksili bireyler için daha iyi) */
+}
+
+/* Başlık stilleri (h1, h2 vb. için belirginlik) */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--primary-text-color);
+    margin-top: 1.5em; /* Başlık üst boşluğu */
+    margin-bottom: 0.8em; /* Başlık alt boşluğu */
+    line-height: 1.2;     /* Başlık satır yüksekliği */
+    font-weight: 700;     /* Başlıkları daha kalın yap */
+}
+
+h1 { font-size: 2.2em; }
+h2 { font-size: 1.8em; }
+h3 { font-size: 1.5em; }
+
+/* Paragraf stilleri */
+p {
+    margin-bottom: 1em; /* Paragraflar arası boşluk */
+}
+
+/* Link stilleri */
+a {
+    color: var(--link-color);
+    text-decoration: none; /* Varsayılan alt çizgiyi kaldır */
+}
+a:hover {
+    text-decoration: underline; /* Mouse üzerine gelince alt çizgi belirsin */
+}
+
+/* Listeler */
+ul, ol {
+    padding-left: 1.5em; /* Listeler için içeriden boşluk */
+    margin-bottom: 1em;
+}
+li {
+    margin-bottom: 0.5em;
 }

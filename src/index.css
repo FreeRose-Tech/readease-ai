@@ -19,7 +19,11 @@
     --base-letter-spacing: 0.03em;        /* Harf aralığı */
     --base-word-spacing: 0.08em;          /* Kelime aralığı */
 
+
     /* font-family artık body'de doğrudan tanımlanacak, burada varsayılan olarak bırakılabilir veya kaldırılabilir */
+
+    /* Disleksi dostu fontları öncelikli olarak kullan */
+    font-family: "Lexend", "OpenDyslexic", Arial, sans-serif; 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -34,16 +38,16 @@ body {
     place-items: center;
     min-width: 320px;
     min-height: 100vh;
-    
     font-family: 'Lexend', 'Inter', sans-serif; /* styles.css'ten alınan font ailesi */
     background: linear-gradient(to top right, #d0e8f2, #fefefe); /* styles.css'ten alınan degrade arka plan */
-    
     font-size: var(--base-font-size);
     line-height: var(--base-line-height);
     letter-spacing: var(--base-letter-spacing);
     word-spacing: var(--base-word-spacing);
     color: var(--primary-text-color); /* styles.css'teki #333 ile aynı, değişkeni kullan */
     /* background-color: var(--background-color); -- Degrade arka plan olduğu için bu satırı kaldırıyoruz */
+    background-color: var(--background-color);
+    /* font-family zaten :root'tan geliyor */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -119,12 +123,12 @@ button:focus-visible {
     outline-offset: 3px;
     border-radius: 8px;
 }
-
 /* Yeni eklenen: Disabled buton stili */
 button:disabled {
     cursor: not-allowed;
     opacity: 0.6;
 }
+
 
 /* Metin İçeriği ve Vurgulama Konteynerleri */
 .text-content-container {
@@ -198,7 +202,30 @@ textarea {
     margin-left: auto;
     margin-right: auto;
 }
+textarea {
+    resize: vertical;
+    min-height: 120px;
+}
 
+.settings-panel {
+    position: sticky;
+    top: 20px;
+    right: 20px;
+    background-color: var(--container-bg-color);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    border: 1px solid var(--border-color);
+    margin-top: 20px;
+    justify-content: center;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
 .settings-panel label {
     font-weight: 600;
     margin-right: 5px;
