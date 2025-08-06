@@ -1,3 +1,4 @@
+// server.js
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -17,8 +18,7 @@ app.post("/api/simplify", async (req, res) => {
   }
 
   try {
-    // Daha anlamlı ve eksiksiz özet için model değişti
-    const model = "facebook/bart-large-cnn";
+    const model = "sshleifer/distilbart-cnn-12-6";
 
     const response = await fetch(
       `https://api-inference.huggingface.co/models/${model}`,
@@ -28,14 +28,9 @@ app.post("/api/simplify", async (req, res) => {
           Authorization: `Bearer ${process.env.HF_API_KEY}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ //
+        body: JSON.stringify({
           inputs: text,
-          parameters: { 
-            max_length: 200, // Uzun özet
-            min_length: 80,  // Çok kısa olmasın
-            do_sample: false,
-            num_beams: 4     // Daha kaliteli sonuç
-          },
+          parameters: { max_length: 100, min_length: 40, do_sample: false },
         }),
       }
     );
@@ -61,11 +56,27 @@ app.post("/api/simplify", async (req, res) => {
       simplifiedText = JSON.stringify(data);
     }
 
-    return res.json({ simplifiedText });
+    // 🔹 Önemli kelimeleri otomatik çıkarma (basit versiyon)
+    const words = simplifiedText
+      .split(/\s+/)
+      .map(w => w.replace(/[^\p{L}0-9]/gu, "")) // Noktalama temizle
+      .filter(w => w.length > 4); // 4 harften kısa kelimeleri alma
+
+    const uniqueWords = [...new Set(words)];
+    const sorted = uniqueWords.sort((a, b) => b.length - a.length);
+    const topKeywords = sorted.slice(0, 5);
+
+    // Tek seferde cevap dön
+    return res.json({
+      simplifiedText,
+      keywords: topKeywords
+    });
   } catch (error) {
     console.error("Detailed Error:", error);
     if (!res.headersSent) {
-      return res.status(500).json({ error: error.message || "Hugging Face API error" });
+      return res.status(500).json({
+        error: error.message || "Hugging Face API error"
+      });
     }
   }
 });

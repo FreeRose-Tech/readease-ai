@@ -11,6 +11,13 @@ function App() {
 
   const t = translations["en"]; // İngilizce çeviri kullanılıyor
 
+  const highlightKeywords = (text, keywords) => {
+    if (!keywords || keywords.length === 0) return text;
+    // RegExp oluştur
+    const regex = new RegExp(`\\b(${keywords.join("|")})\\b`, "gi");
+    return text.replace(regex, (match) => `<mark class="bg-yellow-200">${match}</mark>`);
+  };
+
   const handleSimplify = async (textParam) => {
     const textToSimplify = textParam ?? inputText;
 
@@ -27,7 +34,6 @@ function App() {
     setError(null);
 
     try {
-      // Proxy sayesinde burası direkt /api olarak kalıyor
       const response = await fetch("/api/simplify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -40,8 +46,12 @@ function App() {
       }
 
       const data = await response.json();
-      setSimplifiedText(data.simplifiedText); // Backend'teki isim
-      setHighlightedOriginalText(textToSimplify); // Şimdilik orijinal metin göster
+      setSimplifiedText(data.simplifiedText);
+
+      // Gelen keywords ile highlight yap
+      const highlighted = highlightKeywords(textToSimplify, data.keywords);
+      setHighlightedOriginalText(highlighted);
+
     } catch (err) {
       setError(t.apiError + ": " + err.message);
       console.error("API call error:", err);
@@ -107,6 +117,18 @@ function App() {
           {loading ? "Simplifying..." : t.simplifyBtn}
         </button>
 
+        {highlightedOriginalText && (
+          <div className="mt-10 bg-container-bg border-l-4 border-yellow-400 p-6 rounded-xl shadow-inner">
+            <h2 className="text-xl font-semibold text-yellow-600 mb-2">
+              Original Text with Highlights
+            </h2>
+            <p
+              className="text-lg whitespace-pre-line leading-relaxed text-dys-text"
+              dangerouslySetInnerHTML={{ __html: highlightedOriginalText }}
+            ></p>
+          </div>
+        )}
+
         {simplifiedText && (
           <div className="mt-10 bg-container-bg border-l-4 border-dys-accent p-6 rounded-xl shadow-inner">
             <h2 className="text-xl font-semibold text-dys-accent mb-2">
@@ -125,4 +147,3 @@ function App() {
 }
 
 export default App;
-// This code is the main application component for a text simplification tool.

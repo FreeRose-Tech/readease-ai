@@ -297,3 +297,9 @@ body.dark-mode {
 }
 
  
+.highlight {
+  background-color: #fff9a6; /* Disleksi dostu açık sarı */
+  color: #000;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
